@@ -1,0 +1,37 @@
+version: '3.9'
+volumes:
+ database:
+
+services:
+  web:
+#    image: php:8.2.9-apache-bullseye
+    build: docker/symfony
+    volumes:
+      - ./symfony:/var/www/html
+    ports:
+      - '8081:80'
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
+#    networks:
+#      - web
+#      - database
+#    depends_on:
+#      - database
+#
+#  database:
+#     image: postgres:14-bullseye
+#     ports:
+#         - "6432:5432"
+#     environment:
+#       - POSTGRES_PASSWORD=psql
+#       - POSTGRES_USER=psql
+#       - POSTGRES_DB=database
+#       - PGDATA=/var/lib/postgresql/data/pgdata
+#     volumes:
+#         - database:/var/lib/postgresql/data/pgdata
+#     networks:
+#       - database
+#
+#networks:
+#  database:
+#  web:
