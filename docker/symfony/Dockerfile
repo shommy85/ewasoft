@@ -1,6 +1,7 @@
 FROM php:8.2.9-apache-bullseye
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
@@ -19,6 +20,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
 RUN apt install -y symfony-cli
+
+#RUN cd /var/www/html && composer install
+#RUN composer install
 
 #RUN symfony new . --version="6.3.*"
 

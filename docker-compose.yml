@@ -3,23 +3,35 @@ volumes:
  database:
 
 services:
-  web:
-#    image: php:8.2.9-apache-bullseye
+#  web:
+#    build: docker/symfony
+#    volumes:
+#      - ./symfony:/var/www/html
+#    ports:
+#      - '8081:80'
+#    environment:
+#      APACHE_DOCUMENT_ROOT: /var/www/html/public
+##    networks:
+##      - web
+##      - database
+#    depends_on:
+#      - database
+
+  gateway:
     build: docker/symfony
     volumes:
-      - ./symfony:/var/www/html
+      - ./gateway:/var/www/html
     ports:
-      - '8081:80'
+      - '8082:80'
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
-#    networks:
-#      - web
-#      - database
+    #    networks:
+    #      - web
+    #      - database
     depends_on:
       - database
 
   database:
-#     image: postgres:14-bullseye
      build: docker/postgres
      ports:
          - "6432:5432"
