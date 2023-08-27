@@ -5,3 +5,5 @@ HTTPDUSER=$(ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]gi
 setfacl -dR -m u:"$HTTPDUSER":rwX -m u:$(whoami):rwX /var/www/html/var
 
 setfacl -R -m u:"$HTTPDUSER":rwX -m u:$(whoami):rwX /var/www/html/var
+
+composer install

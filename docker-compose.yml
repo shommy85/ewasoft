@@ -33,6 +33,17 @@ services:
     depends_on:
       - database
 
+  posts:
+    build: docker/symfony
+    volumes:
+      - ./posts:/var/www/html
+    ports:
+      - '8083:80'
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
+    depends_on:
+      - database
+
   database:
      build: docker/postgres
      ports:

@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 //TODO: Rename this controller and add endpoint for upload file
+//TODO: Add endpoint for retrieving user data
 class RegistrationController extends AbstractController
 {
     public function index(EntityManagerInterface $entityManager, Request $request, UserPasswordHasherInterface $passwordHasher): Response
