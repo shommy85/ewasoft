@@ -3,10 +3,12 @@ FROM php:8.2.9-apache-bullseye
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
+RUN a2enmod rewrite
+
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-RUN apt-get update && apt install -y zip unzip libpq-dev
+RUN apt-get update && apt install -y acl zip unzip libpq-dev
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -28,5 +30,14 @@ RUN apt install -y symfony-cli
 #RUN composer install
 
 #RUN symfony new . --version="6.3.*"
+
+#RUN HTTPDUSER=$(ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1) \
+#    && setfacl -dR -m u:"$HTTPDUSER":rwX -m u:$(whoami):rwX /var/www/html/var \
+#    && setfacl -R -m u:"$HTTPDUSER":rwX -m u:$(whoami):rwX /var/www/html/var
+
+#COPY init-project.sh /usr/local/bin/init-project.sh
+#RUN chmod +x /usr/local/bin/init-project.sh
+#
+#ENTRYPOINT /usr/local/bin/init-project.sh
 
 WORKDIR /var/www/html

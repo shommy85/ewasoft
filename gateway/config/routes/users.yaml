@@ -1,0 +1,13 @@
+register_user:
+  path:       /api/users/register
+  controller: App\Controller\RegistrationController::index
+  methods:    POST
+
+update_user:
+  path:       /api/users/me
+  controller: App\Controller\RegistrationController::updateProfile
+  methods:    PATCH
+
+test_user:
+  path:       /api/users/test
+  controller: App\Controller\RegistrationController::test
