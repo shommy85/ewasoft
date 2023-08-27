@@ -44,6 +44,17 @@ services:
     depends_on:
       - database
 
+  likes:
+    build: docker/symfony
+    volumes:
+      - ./likes:/var/www/html
+    ports:
+      - '8084:80'
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
+    depends_on:
+      - database
+
   database:
      build: docker/postgres
      ports:

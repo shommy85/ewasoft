@@ -9,4 +9,8 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 	CREATE USER posts_service_user WITH PASSWORD 'posts_pwd';
 	CREATE DATABASE posts_service_db;
   GRANT ALL PRIVILEGES ON DATABASE posts_service_db TO posts_service_user;
+
+  CREATE USER likes_service_user WITH PASSWORD 'likes_pwd';
+  CREATE DATABASE likes_service_db;
+  GRANT ALL PRIVILEGES ON DATABASE likes_service_db TO likes_service_user;
 EOSQL
