@@ -75,7 +75,7 @@ class RegistrationController extends AbstractController
 
     public function test(Request $request): Response
     {
-        print_r($request->getContent());
+        print_r($this->getUser());
         return new Response('OK');
     }
 }
