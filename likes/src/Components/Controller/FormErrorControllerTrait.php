@@ -12,10 +12,22 @@ trait FormErrorControllerTrait
         $errors = [];
 
         foreach ($form->getErrors(true) as $formError) {
-            $errors[] = $formError->getMessage();
+            $errors[] = $formError->getCause();
         }
 
         return $errors;
+    }
+
+    protected function errorExists(FormInterface $form, $payload): bool
+    {
+        $errors = $this->extractFormErrors($form);
+        foreach ($errors as $error) {
+            if ($error->getConstraint()->payload == $payload) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function buildFormErrorResponse(FormInterface $form): JsonResponse
@@ -23,7 +35,7 @@ trait FormErrorControllerTrait
         $errors = $this->extractFormErrors($form);
 
         $data = [
-            $form->getName() => ['errors' => $errors],
+            $form->getName() => ['errors' => array_map(function ($cause) {return $cause->getMessage();}, $errors)]
         ];
 
         return new JsonResponse($data, 400);

@@ -5,11 +5,13 @@ namespace App\Entity;
 use App\Repository\PostUserLikesRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Validator as Assert;
+use App\Validator as CustomAssert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: PostUserLikesRepository::class)]
 #[ORM\Index(name: "post_user_likes_post_id_idx", columns: ["post_id"])]
 #[ORM\Index(name: "post_user_likes_user_id_idx", columns: ["user_id"])]
+#[UniqueEntity(fields: ['postId', 'userId'], groups: ['create'], payload: 'unique_post_user')]
 class PostUserLikes
 {
     #[ORM\Id]
@@ -18,7 +20,7 @@ class PostUserLikes
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Assert\PostExist(groups: ['create'])]
+    #[CustomAssert\PostExist(groups: ['create'])]
     private ?int $postId = null;
 
     #[ORM\Column]
