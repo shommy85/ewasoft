@@ -28,7 +28,7 @@ class PostsController extends AbstractController
         return new JsonResponse($serializer->serialize($allPosts, 'json'), 200, [], true);
     }
 
-    #[Route('/posts/{id}', name: 'show_post', methods: 'GET')]
+    #[Route('/posts/{id}', name: 'show_post', methods: 'GET', requirements: ['postId' => '\d+'])]
     public function show(Post $post, SerializerInterface $serializer): JsonResponse
     {
         return new JsonResponse($serializer->serialize($post, 'json'), 200, [], true);

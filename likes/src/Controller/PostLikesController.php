@@ -18,6 +18,13 @@ class PostLikesController extends AbstractController
 {
     use FormErrorControllerTrait;
 
+    #[Route('/post-likes/me', name: 'current_user_likes', methods: 'GET')]
+    public function currenUserLikes(SerializerInterface $serializer, PostUserLikesRepository $repository): JsonResponse
+    {
+        $postUserLikes = $repository->getAllLikedPostsForUser($this->getUser()->getId());
+        return new JsonResponse($serializer->serialize($postUserLikes, 'json'), 200, [], true);
+    }
+
     #[Route('/post-likes', name: 'create_post_like', methods: 'POST')]
     public function create(Request $request, SerializerInterface $serializer, EntityStorageInterface $storage, PostUserLikesRepository $repository): JsonResponse
     {

@@ -4,8 +4,9 @@ namespace App\Components\Communication;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
-class PostsService
+class PostsService extends BaseCommunicationService
 {
     private HttpClientInterface $client;
 
@@ -17,13 +18,13 @@ class PostsService
         ]);
     }
 
-    public function postExists(int $postId): bool
+    public function getPost(int $postId): array
     {
         $response = $this->client->request(
             'GET',
             'posts/'.$postId
         );
 
-        return $response->getStatusCode() == 200;
+       return $this->extractResult($response);
     }
 }

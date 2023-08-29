@@ -16,6 +16,14 @@ services:
 ##      - database
 #    depends_on:
 #      - database
+  gateway:
+    build: docker/symfony
+    volumes:
+      - ./gateway:/var/www/html
+    ports:
+      - '8081:80'
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
 
   users:
     build: docker/symfony
@@ -25,11 +33,6 @@ services:
       - '8082:80'
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
-    #    networks:
-    #      - web
-    #      - database
-#    command:
-#     - init-project.sh
     depends_on:
       - database
 
@@ -77,9 +80,3 @@ services:
        - PGDATA=/var/lib/postgresql/data/pgdata
      volumes:
          - database:/var/lib/postgresql/data/pgdata
-#     networks:
-#       - database
-#
-#networks:
-#  database:
-#  web:

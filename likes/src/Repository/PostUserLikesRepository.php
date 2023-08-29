@@ -21,20 +21,20 @@ class PostUserLikesRepository extends ServiceEntityRepository
         parent::__construct($registry, PostUserLikes::class);
     }
 
-//    /**
-//     * @return PostUserLikes[] Returns an array of PostUserLikes objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @param int $userId
+     * @return array
+     */
+    public function getAllLikedPostsForUser(int $userId): array
+    {
+        return $this->createQueryBuilder('pl')
+            ->select('pl.postId')
+            ->andWhere('pl.userId = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getSingleColumnResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?PostUserLikes
 //    {

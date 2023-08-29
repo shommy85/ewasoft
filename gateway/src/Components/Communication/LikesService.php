@@ -5,25 +5,23 @@ namespace App\Components\Communication;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class PostsService
+class LikesService extends BaseCommunicationService
 {
-    private HttpClientInterface $client;
-
     public function __construct(HttpClientInterface $client, TokenStorageInterface $tokenStorage)
     {
         $this->client = $client->withOptions([
-            'base_uri' => 'http://posts/',
+            'base_uri' => 'http://likes/',
             'auth_bearer' => $tokenStorage->getToken()->getCredentials()
         ]);
     }
 
-    public function postExists(int $postId): bool
+    public function getUserLikedPosts(): array
     {
         $response = $this->client->request(
             'GET',
-            'posts/'.$postId
+            'post-likes/me'
         );
 
-        return $response->getStatusCode() == 200;
+        return $this->extractResult($response);
     }
 }
