@@ -12,14 +12,14 @@ security:
                 property: email
     firewalls:
         login:
-            pattern: ^/api/login
+            pattern: ^/users/login
             stateless: true
             json_login:
-                check_path: /api/login_check
+                check_path: /users/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
         api:
-            pattern: ^/api
+            pattern: ^/users
             stateless: true
             jwt: ~
         dev:
@@ -38,9 +38,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/users/register, roles: PUBLIC_ACCESS  }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/users/login, roles: PUBLIC_ACCESS }
+        - { path: ^/users/register, roles: PUBLIC_ACCESS  }
+        - { path: ^/users,       roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

@@ -10,15 +10,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 //TODO: Rename this controller and add endpoint for upload file
 //TODO: Add endpoint for retrieving user data
-class RegistrationController extends AbstractController
+class UsersController extends AbstractController
 {
-    public function index(EntityManagerInterface $entityManager, Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    #[Route('/users/register', name: 'register_user', methods: 'POST')]
+    public function index(EntityManagerInterface $entityManager, Request $request, UserPasswordHasherInterface $passwordHasher, SerializerInterface $serializer): Response
     {
+        //TODO: Create registration form
         $decoded = json_decode($request->getContent());
         $email = $decoded->email;
         $plaintextPassword = $decoded->password;
@@ -35,9 +38,10 @@ class RegistrationController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->json(['message' => 'Registered Successfully']);
+        return new JsonResponse($serializer->serialize($user, 'json', [AbstractNormalizer::GROUPS => ['basic']]), 200, [], true);
     }
 
+    #[Route('/users/me', name: 'update_user', methods: 'PATCH')]
     public function updateProfile(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer): Response
     {
         //TODO: Put in a separate service
