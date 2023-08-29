@@ -2,84 +2,92 @@
 
 namespace App\Controller;
 
+use App\Components\Controller\FormErrorControllerTrait;
+use App\Components\Storage\StorageService;
+use App\Components\Storage\UserProfileImageUploader;
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Form\UserImageFormType;
+use App\Form\UserRegisterType;
+use App\Form\UserUpdateType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
-//TODO: Rename this controller and add endpoint for upload file
-//TODO: Add endpoint for retrieving user data
 class UsersController extends AbstractController
 {
+    use FormErrorControllerTrait;
     #[Route('/users/register', name: 'register_user', methods: 'POST')]
-    public function index(EntityManagerInterface $entityManager, Request $request, UserPasswordHasherInterface $passwordHasher, SerializerInterface $serializer): Response
+    public function index(Request $request, UserPasswordHasherInterface $passwordHasher, SerializerInterface $serializer, StorageService $storage): Response
     {
-        //TODO: Create registration form
-        $decoded = json_decode($request->getContent());
-        $email = $decoded->email;
-        $plaintextPassword = $decoded->password;
-        $name = $decoded->name;
+        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $user = new User();
-        $hashedPassword = $passwordHasher->hashPassword(
-            $user,
-            $plaintextPassword
-        );
-        $user->setPassword($hashedPassword);
-        $user->setEmail($email);
-        $user->setName($name);
-        $entityManager->persist($user);
-        $entityManager->flush();
+        $form = $this->createForm(UserRegisterType::class, $user);
 
-        return new JsonResponse($serializer->serialize($user, 'json', [AbstractNormalizer::GROUPS => ['basic']]), 200, [], true);
-    }
-
-    #[Route('/users/me', name: 'update_user', methods: 'PATCH')]
-    public function updateProfile(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer): Response
-    {
-        //TODO: Put in a separate service
-        $decoded = json_decode($request->getContent(), true);
-
-        $user = $this->getUser();
-
-        //TODO: implement changing password
-        $form = $this->createFormBuilder($this->getUser(), ['csrf_protection' => false])
-            ->add('name', TextType::class)
-            ->add('email', TextType::class)
-            ->getForm();
-
-        $form->submit($decoded, false);
+        $form->submit($data);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // perform some action...
-            $entityManager->flush();
-//            return new JsonResponse($serializer->serialize($user, 'json'));
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $form->get('password')->getData()
+            );
+            $user->setPassword($hashedPassword);
+
+            $storage->save($user);
             return new JsonResponse($serializer->serialize($user, 'json', [AbstractNormalizer::GROUPS => ['basic']]), 200, [], true);
         }
 
-        $errors = [];
-
-        foreach ($form->getErrors(true) as $formError) {
-            $errors[] = $formError->getMessage();
-        }
-
-        $data = [
-            $form->getName() => ['errors' => $errors],
-        ];
-
-        return new JsonResponse($data, 400);
+        return $this->buildFormErrorResponse($form);
     }
 
-    public function test(Request $request): Response
+    #[Route('/users/me', name: 'update_user', methods: 'PATCH')]
+    public function updateProfile(Request $request, StorageService $storage, SerializerInterface $serializer): Response
     {
-        print_r($this->getUser());
-        return new Response('OK');
+        //TODO: Put in a separate service
+        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $user = $this->getUser();
+        $form = $this->createForm(UserUpdateType::class, $user);
+
+        $form->submit($data);
+
+        //TODO: implement changing password
+        if ($form->isSubmitted() && $form->isValid()) {
+            $storage->save($user);
+            return new JsonResponse($serializer->serialize($user, 'json', [AbstractNormalizer::GROUPS => ['basic']]), 200, [], true);
+        }
+
+        return $this->buildFormErrorResponse($form);
+    }
+
+    #[Route('/users/me/profile-image', name: 'update_user_image', methods: 'POST')]
+    public function changeProfileImage(Request $request, FormFactoryInterface $formFactory, UserProfileImageUploader $imageUploader, StorageService $storage, SerializerInterface $serializer)
+    {
+        /**
+         * @var User $user
+         */
+        $user = $this->getUser();
+        $form = $formFactory->createNamed('', UserImageFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $brochureFile */
+            $profileImage = $form->get('image')->getData();
+            $fileName = $imageUploader->upload($profileImage, $user->getProfileImage());
+
+            $user->setProfileImage($fileName);
+            $storage->save($user);
+
+            return new JsonResponse($serializer->serialize($user, 'json', [AbstractNormalizer::GROUPS => ['profile_image']]), 200, [], true);
+        }
+
+        return $this->buildFormErrorResponse($form);
     }
 }

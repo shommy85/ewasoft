@@ -35,6 +35,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['profile_image'])]
+    private ?string $profileImage = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -110,6 +114,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProfileImage(): ?string
+    {
+        return $this->profileImage;
+    }
+
+    /**
+     * @param string|null $profileImage
+     */
+    public function setProfileImage(?string $profileImage): void
+    {
+        $this->profileImage = $profileImage;
     }
 
     /**
