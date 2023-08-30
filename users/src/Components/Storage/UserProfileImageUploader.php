@@ -21,8 +21,6 @@ class UserProfileImageUploader
         $safeFilename = $this->slugger->slug($originalFilename);
         $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
 
-        $oldFileNamePath = $this->getTargetDirectory() . '/' . $oldFileName;
-
         try {
             $file->move($this->getTargetDirectory(), $fileName);
             if ($oldFileName) unlink($this->getTargetDirectory() . '/' . $oldFileName);
