@@ -16,17 +16,25 @@ services:
 ##      - database
 #    depends_on:
 #      - database
-  gateway:
-    build: docker/symfony
-    volumes:
-      - ./gateway:/var/www/html
-    ports:
-      - '8081:80'
-    environment:
-      APACHE_DOCUMENT_ROOT: /var/www/html/public
-
+#  gateway:
+#    build:
+#      context: docker/symfony
+#      args:
+#        SERVICE_NAME: gateway
+#    volumes:
+#      - ./gateway:/var/www/html
+#    ports:
+#      - '8081:80'
+#    environment:
+#      APACHE_DOCUMENT_ROOT: /var/www/html/public
+#    depends_on:
+#      - rabbitmq
+#
   users:
-    build: docker/symfony
+    build:
+      context: docker/symfony
+      args:
+        SERVICE_NAME: users
     volumes:
       - ./users:/var/www/html
     ports:
@@ -35,31 +43,43 @@ services:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
     depends_on:
       - database
-
-  posts:
-    build: docker/symfony
-    volumes:
-      - ./posts:/var/www/html
-    ports:
-      - '8083:80'
-    environment:
-      APACHE_DOCUMENT_ROOT: /var/www/html/public
-    depends_on:
-      - database
-
-  likes:
-    build: docker/symfony
-    volumes:
-      - ./likes:/var/www/html
-    ports:
-      - '8084:80'
-    environment:
-      APACHE_DOCUMENT_ROOT: /var/www/html/public
-    depends_on:
-      - database
+      - rabbitmq
+#
+#  posts:
+#    build:
+#      context: docker/symfony
+#      args:
+#        SERVICE_NAME: posts
+#    volumes:
+#      - ./posts:/var/www/html
+#    ports:
+#      - '8083:80'
+#    environment:
+#      APACHE_DOCUMENT_ROOT: /var/www/html/public
+#    depends_on:
+#      - database
+#      - rabbitmq
+#
+#  likes:
+#    build:
+#      context: docker/symfony
+#      args:
+#        SERVICE_NAME: likes
+#    volumes:
+#      - ./likes:/var/www/html
+#    ports:
+#      - '8084:80'
+#    environment:
+#      APACHE_DOCUMENT_ROOT: /var/www/html/public
+#    depends_on:
+#      - database
+#      - rabbitmq
 
   direct_coms:
-    build: docker/symfony
+    build:
+      context: docker/symfony
+      args:
+        SERVICE_NAME: direct_coms
     volumes:
       - ./direct_coms:/var/www/html
     ports:
@@ -68,6 +88,7 @@ services:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
     depends_on:
       - database
+      - rabbitmq
 
   database:
      build: docker/postgres
@@ -80,3 +101,12 @@ services:
        - PGDATA=/var/lib/postgresql/data/pgdata
      volumes:
          - database:/var/lib/postgresql/data/pgdata
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
