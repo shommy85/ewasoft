@@ -19,7 +19,7 @@ class MessageEventHandler
 
         $this->logger->debug('APP1: {STATUS_UPDATE} - '.$content);
 
-        print_r( 'APP1: {STATUS_UPDATE} - '.$content);
+        file_put_contents('/var/www/html/public/uploads/test-'.time().'.txt', 'Test');
 
         // the rest of business logic, i.e. sending email to user
         // $this->emailService->email()
