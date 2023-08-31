@@ -16,20 +16,20 @@ services:
 ##      - database
 #    depends_on:
 #      - database
-#  gateway:
-#    build:
-#      context: docker/symfony
-#      args:
-#        SERVICE_NAME: gateway
-#    volumes:
-#      - ./gateway:/var/www/html
-#    ports:
-#      - '8081:80'
-#    environment:
-#      APACHE_DOCUMENT_ROOT: /var/www/html/public
-#    depends_on:
-#      - rabbitmq
-#
+  gateway:
+    build:
+      context: docker/symfony
+      args:
+        SERVICE_NAME: gateway
+    volumes:
+      - ./gateway:/var/www/html
+    ports:
+      - '8081:80'
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
+    depends_on:
+      - rabbitmq
+
   users:
     build:
       context: docker/symfony
@@ -44,36 +44,36 @@ services:
     depends_on:
       - database
       - rabbitmq
-#
-#  posts:
-#    build:
-#      context: docker/symfony
-#      args:
-#        SERVICE_NAME: posts
-#    volumes:
-#      - ./posts:/var/www/html
-#    ports:
-#      - '8083:80'
-#    environment:
-#      APACHE_DOCUMENT_ROOT: /var/www/html/public
-#    depends_on:
-#      - database
-#      - rabbitmq
-#
-#  likes:
-#    build:
-#      context: docker/symfony
-#      args:
-#        SERVICE_NAME: likes
-#    volumes:
-#      - ./likes:/var/www/html
-#    ports:
-#      - '8084:80'
-#    environment:
-#      APACHE_DOCUMENT_ROOT: /var/www/html/public
-#    depends_on:
-#      - database
-#      - rabbitmq
+
+  posts:
+    build:
+      context: docker/symfony
+      args:
+        SERVICE_NAME: posts
+    volumes:
+      - ./posts:/var/www/html
+    ports:
+      - '8083:80'
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
+    depends_on:
+      - database
+      - rabbitmq
+
+  likes:
+    build:
+      context: docker/symfony
+      args:
+        SERVICE_NAME: likes
+    volumes:
+      - ./likes:/var/www/html
+    ports:
+      - '8084:80'
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
+    depends_on:
+      - database
+      - rabbitmq
 
   direct_coms:
     build:

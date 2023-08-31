@@ -12,7 +12,7 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 RUN apt-get update && apt install -y acl zip unzip libpq-dev librabbitmq-dev supervisor
 
 RUN mkdir -p /var/log/supervisor
-COPY supervisord.conf ${SERVICE_NAME}-workers.con? /etc/supervisor/conf.d/
+COPY supervisor/supervisord.conf  supervisor/${SERVICE_NAME}-workers.con? /etc/supervisor/conf.d/
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 

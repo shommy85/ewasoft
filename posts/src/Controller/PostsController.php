@@ -5,16 +5,16 @@ namespace App\Controller;
 use App\Components\Controller\FormErrorControllerTrait;
 use App\Components\Storage\EntityStorageInterface;
 use App\Entity\Post;
+use App\Event\PostDeletedEvent;
 use App\Form\Type\PostType;
 use App\Repository\PostRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class PostsController extends AbstractController
 {
@@ -74,11 +74,14 @@ class PostsController extends AbstractController
     }
 
     #[Route('/posts/{id}', name: 'delete_post', methods: 'DELETE')]
-    public function delete(Post $post, EntityStorageInterface $storage): Response
+    public function delete(Post $post, EntityStorageInterface $storage, EventDispatcherInterface $eventDispatcher): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', $post, 'Action not allowed');
 
+        $deletedEvent = new PostDeletedEvent($post->getId(), $post->getAuthorId());
         $storage->delete($post);
+
+        $eventDispatcher->dispatch($deletedEvent, PostDeletedEvent::class);
 
         return new Response(null, 204);
     }

@@ -36,6 +36,17 @@ class PostUserLikesRepository extends ServiceEntityRepository
         ;
     }
 
+    public function deleteLikesForPost(int $postId): void
+    {
+        $this->getEntityManager()
+            ->createQueryBuilder()
+            ->delete($this->getClassName(), 'pl')
+            ->where('pl.postId = :postId')
+            ->setParameter('postId', $postId)
+            ->getQuery()
+            ->execute();
+    }
+
 //    public function findOneBySomeField($value): ?PostUserLikes
 //    {
 //        return $this->createQueryBuilder('p')

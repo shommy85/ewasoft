@@ -8,17 +8,20 @@ framework:
             # async: '%env(MESSENGER_TRANSPORT_DSN)%'
             # failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
-            send_message_events:
+            receive_post_events:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
                     auto_setup: true
                     exchange:
-                        name: message_events
+                        name: post_events
                         type: topic
+                    queues:
+                        post_messages:
+                            binding_keys: [ 'post.deleted' ]
 
         routing:
             # Route your messages to the transports
-            'App\Message\MessageEvent': [send_message_events]
+            # 'App\Message\YourMessage': async
 
 # when@test:
 #    framework:
