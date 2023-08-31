@@ -35,7 +35,7 @@ class SendStatusCommand extends Command
 //        ]);
 
         $this->messageBus->dispatch(
-            new MessageEvent('created', 1, 2, 'HELLO'),
+            new MessageEvent(MessageEvent::CREATED_ACTION, 1, 2, 'HELLO'),
             [new AmqpStamp('message.published')]
         );
 

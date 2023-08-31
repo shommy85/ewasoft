@@ -19,7 +19,7 @@ class MessageReceivedNotifier
     public function postPersist(Message $message): void
     {
         $this->messageBus->dispatch(
-            new MessageEvent('created', $message->getSenderId(), $message->getRecipientId(), $message->getContent()),
+            new MessageEvent(MessageEvent::CREATED_ACTION, $message->getSenderId(), $message->getRecipientId(), $message->getContent()),
             [new AmqpStamp('message.published')]
         );
     }

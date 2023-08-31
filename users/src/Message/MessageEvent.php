@@ -4,6 +4,7 @@ namespace App\Message;
 
 class MessageEvent
 {
+    const CREATED_ACTION = 'created';
     public function __construct(protected string $action, protected int $senderId, protected int $receiverId, protected string $content)
     {
     }

@@ -19,9 +19,17 @@ framework:
                         direct_messages:
                             binding_keys: [ 'message.published' ]
 
+            send_user_events:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    auto_setup: true
+                    exchange:
+                        name: user_events
+                        type: topic
+
         routing:
             # Route your messages to the transports
-            # 'App\Message\YourMessage': async
+             'App\Message\UserEvent': send_user_events
 
 # when@test:
 #    framework:
