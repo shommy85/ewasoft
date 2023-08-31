@@ -7,3 +7,5 @@ setfacl -dR -m u:"$HTTPDUSER":rwX -m u:$(whoami):rwX /var/www/html/var
 setfacl -R -m u:"$HTTPDUSER":rwX -m u:$(whoami):rwX /var/www/html/var
 
 composer install
+
+php bin/console doctrine:migrations:migrate
