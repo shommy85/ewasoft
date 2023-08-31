@@ -2,6 +2,12 @@ version: '3.9'
 volumes:
  database:
 
+x-volumes:
+  &jwt-volume
+  type: bind
+  source: ./docker/symfony/jwt_keys
+  target: /var/www/html/config/jwt
+
 services:
 #  web:
 #    build: docker/symfony
@@ -23,6 +29,7 @@ services:
         SERVICE_NAME: gateway
     volumes:
       - ./gateway:/var/www/html
+      - *jwt-volume
     ports:
       - '8081:80'
     environment:
@@ -37,6 +44,7 @@ services:
         SERVICE_NAME: users
     volumes:
       - ./users:/var/www/html
+      - *jwt-volume
     ports:
       - '8082:80'
     environment:
@@ -52,6 +60,7 @@ services:
         SERVICE_NAME: posts
     volumes:
       - ./posts:/var/www/html
+      - *jwt-volume
     ports:
       - '8083:80'
     environment:
@@ -67,6 +76,7 @@ services:
         SERVICE_NAME: likes
     volumes:
       - ./likes:/var/www/html
+      - *jwt-volume
     ports:
       - '8084:80'
     environment:
@@ -82,6 +92,7 @@ services:
         SERVICE_NAME: direct_coms
     volumes:
       - ./direct_coms:/var/www/html
+      - *jwt-volume
     ports:
       - '8085:80'
     environment:
