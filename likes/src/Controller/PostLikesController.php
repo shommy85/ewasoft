@@ -41,6 +41,7 @@ class PostLikesController extends AbstractController
             return new JsonResponse($serializer->serialize($postUserLike, 'json'), 200, [], true);
         }
 
+        //Don't throw an error, just show if duplicate
         if ($this->errorExists($form, 'unique_post_user')) {
             $postUserLike = $repository->findOneBy(['postId' => $postUserLike->getPostId(), 'userId' => $postUserLike->getUserId()]);
             return new JsonResponse($serializer->serialize($postUserLike, 'json'), 200, [], true);
@@ -60,7 +61,7 @@ class PostLikesController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $postUserLike = $repository->findOneBy(['postId' => $data['postId'], 'userId' => $this->getUser()->getId()]);
-            //$this->denyAccessUnlessGranted('ROLE_USER', $postUserLike, 'Action not allowed');
+
             if ($postUserLike) $storage->delete($postUserLike);
 
             return new Response(null, 204);

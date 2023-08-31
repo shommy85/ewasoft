@@ -41,5 +41,4 @@ class UserEvent
         return $this->email;
     }
 
-
 }

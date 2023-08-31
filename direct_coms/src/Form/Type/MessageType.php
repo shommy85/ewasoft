@@ -14,13 +14,11 @@ class MessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-//            ->add('senderId', IntegerType::class)
             ->add('recipientId', IntegerType::class)
             ->add('content', TextType::class)
             ->add('threadMessage', EntityType::class, [
                 'class' => Message::class
             ])
-//            ->add('userId', IntegerType::class)
         ;
     }
 }

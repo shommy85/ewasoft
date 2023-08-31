@@ -12,7 +12,7 @@ class PostsService
     public function __construct(HttpClientInterface $client, TokenStorageInterface $tokenStorage)
     {
         $this->client = $client->withOptions([
-            'base_uri' => 'http://posts/',
+            'base_uri' => 'http://posts/',//TODO: Put this in config
             'auth_bearer' => $tokenStorage->getToken()->getCredentials()
         ]);
     }

@@ -17,9 +17,7 @@ class MessageEventHandler
     {
         $content = $statusUpdate->getContent();
 
-        $this->logger->debug('APP1: {STATUS_UPDATE} - '.$content);
-
-        file_put_contents('/var/www/html/public/uploads/test-'.time().'.txt', 'Test');
+        $this->logger->debug('Message received: '.$content);
 
         // the rest of business logic, i.e. sending email to user
         // $this->emailService->email()

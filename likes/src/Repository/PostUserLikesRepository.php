@@ -46,14 +46,4 @@ class PostUserLikesRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
     }
-
-//    public function findOneBySomeField($value): ?PostUserLikes
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

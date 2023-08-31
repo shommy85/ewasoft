@@ -48,7 +48,6 @@ class PostsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // perform some action...
             $storage->save($post);
-//            return new JsonResponse($serializer->serialize($user, 'json'));
             return new JsonResponse($serializer->serialize($post, 'json'), 200, [], true);
         }
 
@@ -84,18 +83,5 @@ class PostsController extends AbstractController
         $eventDispatcher->dispatch($deletedEvent, PostDeletedEvent::class);
 
         return new Response(null, 204);
-    }
-
-    #[Route('/test', name: 'app_test')]
-    public function test(SerializerInterface $serializer): JsonResponse
-    {
-        $user = $this->getUser();
-
-        return new JsonResponse($serializer->serialize($user, 'json'), 200, [], true);
-
-//        return $this->json([
-//            'message' => 'Welcome to your new controller!',
-//            'path' => 'src/Controller/PostsController.php',
-//        ]);
     }
 }

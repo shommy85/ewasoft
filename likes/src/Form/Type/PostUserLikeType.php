@@ -12,7 +12,6 @@ class PostUserLikeType extends AbstractType
     {
         $builder
             ->add('postId', IntegerType::class)
-//            ->add('userId', IntegerType::class)
         ;
     }
 }
