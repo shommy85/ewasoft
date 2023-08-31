@@ -9,19 +9,6 @@ x-volumes:
   target: /var/www/html/config/jwt
 
 services:
-#  web:
-#    build: docker/symfony
-#    volumes:
-#      - ./symfony:/var/www/html
-#    ports:
-#      - '8081:80'
-#    environment:
-#      APACHE_DOCUMENT_ROOT: /var/www/html/public
-##    networks:
-##      - web
-##      - database
-#    depends_on:
-#      - database
   gateway:
     build:
       context: docker/symfony
@@ -34,6 +21,8 @@ services:
       - '8081:80'
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
+    links:
+      - "direct_coms:messages"
     depends_on:
       - rabbitmq
 
