@@ -24,16 +24,6 @@ class SendStatusCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $status = "Message from User";
-
-//        $this->messageBus->dispatch(
-//            message: new StatusUpdate($status)
-//        );
-
-//        $this->messageBus->dispatch(new StatusUpdate($status), [
-//            new AmqpStamp('message.received', AMQP_NOPARAM, []),
-//        ]);
-
         $this->messageBus->dispatch(
             new MessageEvent(MessageEvent::CREATED_ACTION, 1, 2, 'HELLO'),
             [new AmqpStamp('message.published')]
