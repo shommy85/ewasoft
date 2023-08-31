@@ -34,8 +34,8 @@ services:
     volumes:
       - ./users:/var/www/html
       - *jwt-volume
-    ports:
-      - '8082:80'
+#    ports:
+#      - '8082:80'
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
     depends_on:
@@ -50,8 +50,8 @@ services:
     volumes:
       - ./posts:/var/www/html
       - *jwt-volume
-    ports:
-      - '8083:80'
+#    ports:
+#      - '8083:80'
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
     depends_on:
@@ -66,8 +66,8 @@ services:
     volumes:
       - ./likes:/var/www/html
       - *jwt-volume
-    ports:
-      - '8084:80'
+#    ports:
+#      - '8084:80'
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
     depends_on:
@@ -82,8 +82,8 @@ services:
     volumes:
       - ./direct_coms:/var/www/html
       - *jwt-volume
-    ports:
-      - '8085:80'
+#    ports:
+#      - '8085:80'
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
     depends_on:
