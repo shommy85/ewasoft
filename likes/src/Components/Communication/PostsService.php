@@ -5,6 +5,9 @@ namespace App\Components\Communication;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * Used for communication with post microservice
+ */
 class PostsService
 {
     private HttpClientInterface $client;
@@ -17,6 +20,12 @@ class PostsService
         ]);
     }
 
+    /**
+     * Check if post with given id exists
+     * @param int $postId
+     * @return bool
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function postExists(int $postId): bool
     {
         $response = $this->client->request(

@@ -17,6 +17,13 @@ class PostsService extends BaseCommunicationService
         ]);
     }
 
+    /**
+     * Returns post data for given id
+     * @param int $postId
+     * @return array
+     * @throws \JsonException
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function getPost(int $postId): array
     {
         $response = $this->client->request(

@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
 {
+    //TODO: Implement data aggregation when fetching all posts
     #[Route('/api/posts/{postId}', name: 'api_show_post', requirements: ['postId' => '\d+'], methods: 'GET')]
     public function showPost(Request $request, PostsService $postsService, LikesService $likesService, int $postId): Response
     {

@@ -15,6 +15,12 @@ class LikesService extends BaseCommunicationService
         ]);
     }
 
+    /**
+     * Returns post ids that are liked by current user
+     * @return array
+     * @throws \JsonException
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function getUserLikedPosts(): array
     {
         $response = $this->client->request(
