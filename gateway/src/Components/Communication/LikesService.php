@@ -25,7 +25,7 @@ class LikesService extends BaseCommunicationService
     {
         $response = $this->client->request(
             'GET',
-            'post-likes/me'
+            'likes/me'
         );
 
         return $this->extractResult($response);

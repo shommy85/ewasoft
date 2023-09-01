@@ -55,12 +55,17 @@ class PostLikesController extends AbstractController
     {
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        $form = $this->createForm(PostUserLikeType::class);
+        $postUserLike = new PostUserLikes();
+        $postUserLike->setUserId($this->getUser()->getId());
+        $form = $this->createForm(PostUserLikeType::class, $postUserLike);
 
         $form->submit($data, false);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $postUserLike = $repository->findOneBy(['postId' => $data['postId'], 'userId' => $this->getUser()->getId()]);
+            $postUserLike = $repository->findOneBy([
+                'postId' => $form->getData()->getPostId(),
+                'userId' => $form->getData()->getUserId()]
+            );
 
             if ($postUserLike) $storage->delete($postUserLike);
 

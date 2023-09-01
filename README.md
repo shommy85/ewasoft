@@ -73,12 +73,14 @@ Just a simple implementation of creating a message. When it is saved in database
 
 ### RabbitMq
 For consuming flexibility topic type brokers were used everywhere.
+Admin panel for the RabbitMq is accessible on the URL:
+```http://localhost:15672/#/queues/%2F/messages```
+with credentials user "guest" and password "guest".
 
 ## Some further code and logic improvements
 * Adding user roles and hierarchies for all the actions
 * Moving json_decode logic from controllers to request listener so we can directly obtain data from request
 * Creating CRUD controller abstraction so it could be reused.
-* Better validation coverage of submitted data, as this is mostly manual work and there is limited time, not that much attention was given to it.
 * Method annotation and documentation.
 * Code that is reused across microservices could be packed into bundles and made available in composer repository so it does not have to be copied.
 * Slightly better folder organisation of project.

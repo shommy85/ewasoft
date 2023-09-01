@@ -24,6 +24,7 @@ class MessageController extends AbstractController
         return new JsonResponse($serializer->serialize($userMessages, 'json'), 200, [], true);
     }
 
+    //TODO: Add validation if recipient exists, similarly like it is done on likes side for posts
     #[Route('/messages', name: 'send_message', methods: 'POST')]
     public function create(Request $request, SerializerInterface $serializer, EntityStorageInterface $storage): JsonResponse
     {

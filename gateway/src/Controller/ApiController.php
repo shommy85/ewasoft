@@ -28,6 +28,7 @@ class ApiController extends AbstractController
     #[Route('/api/{host}/{path}', name: 'api', requirements: ['path' => '.+'])]
     public function index(Request $request, ReverseProxyService $reverseProxyService, $host, $path = ''): Response
     {
+        //TODO: Implement stricter mapping in order not to expose all microservices endpoints
         $remotePath = $host. ($path? '/'.$path: '');
         return $reverseProxyService->makeProxyRequest($request, $host, $remotePath);
     }

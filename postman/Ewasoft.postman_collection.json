@@ -705,7 +705,7 @@
 										{
 											"key": "image",
 											"type": "file",
-											"src": "/home/milos/Pictures/Milos Roksandic -  Profile.jpg"
+											"src": []
 										}
 									]
 								},
@@ -736,7 +736,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"email\":\"milos.roksandic85+test3@gmail.com\", \"name\": \"Milos Roksandic\", \"password\": \"milos\"}",
+									"raw": "{\"email\":\"milos.roksandic85+test8@gmail.com\", \"name\": \"Milos Roksandic\", \"password\": \"milos\"}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -821,7 +821,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"email\":\"milos.roksandic85@gmail.com\", \"name\": \"Milos Roksandic8989\"}",
+									"raw": "{\"email\":\"milos.roksandic85@gmail.com\", \"name\": \"Milos Roksandic\"}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1126,13 +1126,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8084/likes/me",
+									"raw": "http://localhost:8081/api/likes/me",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8084",
+									"port": "8081",
 									"path": [
+										"api",
 										"likes",
 										"me"
 									]
@@ -1165,13 +1166,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8084/likes",
+									"raw": "http://localhost:8081/api/likes",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8084",
+									"port": "8081",
 									"path": [
+										"api",
 										"likes"
 									]
 								}

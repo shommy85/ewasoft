@@ -37,7 +37,9 @@ class ReverseProxyService
             $options
         );
 
-        $contentType = $clientResponse->getHeaders(false)['content-type'][0]?: 'application\/json';
+        $contentType = isset($clientResponse->getHeaders(false)['content-type'][0])?
+            $clientResponse->getHeaders(false)['content-type'][0]:
+            'application\/json';
 
         return new Response(
             $clientResponse->getContent(false),

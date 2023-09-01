@@ -23,12 +23,19 @@ class Message
 
     #[ORM\Column]
     #[Assert\NotNull]
+    #[Assert\Positive]
+    #[Assert\NotIdenticalTo(
+        propertyPath: 'recipientId',
+    )]
     private ?int $senderId = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
+    #[Assert\Positive]
     private ?int $recipientId = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull]
     private ?string $content = null;
 
     #[ORM\Column]

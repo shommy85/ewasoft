@@ -56,7 +56,7 @@ class UsersController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(UserUpdateType::class, $user);
 
-        $form->submit($data);
+        $form->submit($data, false);
 
         //TODO: implement changing password
         if ($form->isSubmitted() && $form->isValid()) {
