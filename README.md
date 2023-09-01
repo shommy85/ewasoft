@@ -45,7 +45,9 @@ Also, there is one data aggregation that gateway does when fetching one post, it
 JWT token is used for authentication and is obtained on endpoint:
 ```http://localhost:8081/api/users/login_check```
 
-but of course user needs to be registered beforehand.
+but of course user needs to be registered beforehand with endpoint:
+```http://localhost:8081/api/users/register```
+
 The logic behind the authentication is, that via gateway proxying to the user service, token is generated and returned to the client.
 It is then clients responsibility to supply that token on other API requests.
 Other microservices use that token too in order to authenticate user, but for all other services except for user, their user is just a DTO object with information obtained from the token.
@@ -76,6 +78,19 @@ For consuming flexibility topic type brokers were used everywhere.
 Admin panel for the RabbitMq is accessible on the URL:
 ```http://localhost:15672/#/queues/%2F/messages```
 with credentials user "guest" and password "guest".
+
+## User registration and login
+If using supplied postman collection look in folder "Gateway";
+1. Register user with endpoint "Register User":
+```http://localhost:8081/api/users/register```
+2. Login user with endpoint "Login User":
+```http://localhost:8081/api/users/login_check```
+
+Here the token is returned that needs to be used across all other requests.
+If using postman and imported environment, this will be automatically pre-populated for every other request.
+Token is transmitted via "Authorisation" header.
+
+**Note: please make sure that username and password for both requests are matching.**
 
 ## Some further code and logic improvements
 * Adding user roles and hierarchies for all the actions

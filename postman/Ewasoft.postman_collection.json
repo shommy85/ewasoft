@@ -736,7 +736,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"email\":\"milos.roksandic85+test8@gmail.com\", \"name\": \"Milos Roksandic\", \"password\": \"milos\"}",
+									"raw": "{\"email\":\"milos.roksandic85@gmail.com\", \"name\": \"Milos Roksandic\", \"password\": \"milos\"}",
 									"options": {
 										"raw": {
 											"language": "json"
